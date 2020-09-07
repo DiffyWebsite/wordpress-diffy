@@ -1,0 +1,23 @@
+{
+	"name": "diffy-website/wordpress-diffy",
+	"description": "Diffy adds visual regression testing to your WordPress site so you never miss something gets broken during the updates.",
+	"type": "wordpress-plugin",
+	"keywords": [
+		"upgrades",
+		"update",
+		"testing",
+		"visual regression testing",
+		"auto-updates",
+		"notifications"
+	],
+	"homepage": "https://diffy.website/wordpress",
+	"license": "GPL-2.0+",
+	"authors": [ {
+		"name": "Diffy",
+		"homepage": "https://diffy.website/about"
+	} ],
+	"require": {
+		"diffywebsite/diffy-php": "1.x-dev",
+		"php": ">=5.3.0"
+	}
+}
