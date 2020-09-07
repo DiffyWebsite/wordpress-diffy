@@ -80,8 +80,39 @@ function diffy_self_deactivate() {
  * Runs when we start upgrade process. Create first set of screenshots.
  */
 function diffy_create_first_screenshots($options) {
-  file_put_contents('/tmp/started.txt', 'test');
-  sleep(120);
+  $diffy_api_key = get_option('diffy_api_key');
+  $diffy_project_id = get_option('diffy_project_id');
+  if (empty($diffy_api_key) || empty($diffy_project_id)) {
+    return $options;
+  }
+  try {
+    \Diffy\Diffy::setApiKey($diffy_api_key);
+  }
+  catch (\Exception $exception) {
+    return $options;
+  }
+
+  $screenshot_id = 0;
+  try {
+    $screenshot_id = \Diffy\Screenshot::create($diffy_project_id, 'production');
+    // Assume that screenshots should be created in 20 mins max.
+    for ($i = 0; $i < 240; $i++) {
+      sleep(5);
+      $screenshot = \Diffy\Screenshot::retrieve($screenshot_id);
+      if ($screenshot->isCompleted()) {
+        break;
+      }
+    }
+  }
+  catch (\Exception $e) {
+    return $options;
+  }
+
+  if (!empty($screenshot_id)) {
+    update_option('diffy_last_screenshot_id', $screenshot_id);
+  }
+
+  return $options;
 }
 
 add_filter( 'upgrader_package_options', 'diffy_create_first_screenshots' );
@@ -90,7 +121,21 @@ add_filter( 'upgrader_package_options', 'diffy_create_first_screenshots' );
  * Runs after updates completed. Create second set of screenshots and diff.
  */
 function diffy_create_second_screenshots_diff() {
-  file_put_contents('/tmp/stopped.txt', 'test');
+  $last_screenshot_id = get_option('diffy_last_screenshot_id');
+  if (empty($last_screenshot_id)) {
+    return;
+  }
+
+  $diffy_project_id = get_option('diffy_project_id');
+  try {
+    $second_screenshot_id = \Diffy\Screenshot::create($diffy_project_id, 'production');
+    \Diffy\Diff::create($diffy_project_id, $last_screenshot_id, $second_screenshot_id);
+  }
+  catch (\Exception $e) {
+    return;
+  }
+
+  add_option('diffy_last_screenshot_id', 0);
 }
 add_action( 'upgrader_process_complete', 'diffy_create_second_screenshots_diff' );
 

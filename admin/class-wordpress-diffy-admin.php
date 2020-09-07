@@ -22,7 +22,6 @@ class Diffy_Admin {
    * Register site-admin nav menu elements.
    */
   public function addPluginAdminMenu() {
-    //add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
     add_menu_page(
       $this->plugin_name,
       'Diffy',
@@ -41,6 +40,7 @@ class Diffy_Admin {
     // Two settings API Key and Project ID.
     register_setting('reading', 'diffy_api_key');
     register_setting('reading', 'diffy_project_id');
+    register_setting('reading', 'diffy_last_screenshot_id');
 
     // Introduction section.
     add_settings_section(
@@ -66,7 +66,17 @@ class Diffy_Admin {
 
   // section content cb
   public function diffy_introduction_section_callback() {
-    echo '<p>This module integrates <a href="https://diffy.website">visual regression testing</a> to your plugins update process.</p>';
+    echo <<< EOT
+        <p>This module integrates <a target="_blank" href="https://diffy.website">visual regression testing</a> to your plugins update process.</p>
+        <p>Steps to set up:
+          <ol>
+              <li><a target="_blank" href="https://app.diffy.website">Register an account</a> and create an API key at <a target="_blank" href="https://app.diffy.website/#/keys">My Account -> Keys</a>. Copy API Key here.</li>
+              <li>Create a project in Diffy and save its ID at this form.</li>
+              <li>Run plugins update and see comparison of "before" and "after" screenshots created in Diffy. You will receive an email notification with the results.</li>
+          </ol>
+       </p>
+       <p><i>Please note, this website should be publicly accessible so Diffy can take screenshots from it.</i></p>
+EOT;
   }
 
   // Field callback for 'diffy_api_key'
