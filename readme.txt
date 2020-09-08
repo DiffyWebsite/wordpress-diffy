@@ -6,6 +6,7 @@ Tested up to: 5.5.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Development: https://github.com/DiffyWebsite/wordpress-diffy
 
 Diffy helps to verify plugin updates by taking screenshots of your site before and after update and comparing them.
 
