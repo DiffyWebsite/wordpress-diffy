@@ -1,0 +1,23 @@
+{
+  "name": "diffywebsite/diffy-php",
+  "description": "PHP Bindings for Diffy API",
+  "keywords": [ "cli", "diffy", "diffy-php", "drupal" ],
+  "homepage": "https://diffy.website",
+  "license": "MIT",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=5.5.38",
+    "guzzlehttp/guzzle": "^6.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Diffy\\": "src/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+        "dev-master": "1.x-dev"
+    }
+  }
+}
