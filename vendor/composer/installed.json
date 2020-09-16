@@ -6,19 +6,19 @@
         "source": {
             "type": "git",
             "url": "https://github.com/DiffyWebsite/diffy-php.git",
-            "reference": "aa5c5411f5ecedda4761f3ef6eff89847662a365"
+            "reference": "36909fddb6cae50573843fe82d0755d8bf5f6b1a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/DiffyWebsite/diffy-php/zipball/aa5c5411f5ecedda4761f3ef6eff89847662a365",
-            "reference": "aa5c5411f5ecedda4761f3ef6eff89847662a365",
+            "url": "https://api.github.com/repos/DiffyWebsite/diffy-php/zipball/36909fddb6cae50573843fe82d0755d8bf5f6b1a",
+            "reference": "36909fddb6cae50573843fe82d0755d8bf5f6b1a",
             "shasum": ""
         },
         "require": {
             "guzzlehttp/guzzle": "^6.2",
             "php": ">=5.5.38"
         },
-        "time": "2020-08-11T12:15:44+00:00",
+        "time": "2020-09-16T13:49:42+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -81,7 +81,7 @@
                 "dev-master": "6.5-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "GuzzleHttp\\": "src/"
@@ -141,7 +141,7 @@
                 "dev-master": "1.4-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "GuzzleHttp\\Promise\\": "src/"
@@ -203,7 +203,7 @@
                 "dev-master": "1.6-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "GuzzleHttp\\Psr7\\": "src/"
@@ -266,7 +266,7 @@
         },
         "time": "2018-07-02T15:55:56+00:00",
         "type": "library",
-        "installation-source": "dist",
+        "installation-source": "source",
         "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
@@ -311,7 +311,7 @@
                 "dev-master": "1.0.x-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "Psr\\Http\\Message\\": "src/"
@@ -362,7 +362,7 @@
         },
         "time": "2019-03-08T08:55:37+00:00",
         "type": "library",
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "files": [
                 "src/getallheaders.php"
@@ -415,7 +415,7 @@
                 "url": "https://github.com/symfony/polyfill"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "Symfony\\Polyfill\\Intl\\Idn\\": ""
@@ -485,7 +485,7 @@
                 "url": "https://github.com/symfony/polyfill"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
@@ -552,7 +552,7 @@
                 "url": "https://github.com/symfony/polyfill"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "Symfony\\Polyfill\\Php70\\": ""
@@ -616,7 +616,7 @@
                 "url": "https://github.com/symfony/polyfill"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "Symfony\\Polyfill\\Php72\\": ""

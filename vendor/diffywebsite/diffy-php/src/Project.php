@@ -73,4 +73,44 @@ class Project
         return Diffy::request('GET', 'projects/'.$projectId);
     }
 
+    /**
+     * Scan a URL for internal pages.
+     *
+     * @param string $url
+     * @throws \Diffy\InvalidArgumentsException
+     */
+    public static function scan(string $url) {
+      if (empty($url)) {
+        throw new InvalidArgumentsException('Scanning URL can not be empty');
+      }
+
+      $data = ['url' => $url];
+      return Diffy::request('POST', 'scan', $data);
+    }
+
+    /**
+     * Create a project with production URL $url.
+     *
+     * @param string $base_url
+     * @param array $urls
+     * @throws \Diffy\InvalidArgumentsException
+     */
+    public static function create(string $base_url, array $urls) {
+      if (empty($base_url)) {
+        throw new InvalidArgumentsException('Project Production URL can not be empty');
+      }
+      if (empty($urls)) {
+        throw new InvalidArgumentsException('Project URLs list can not be empty');
+      }
+
+      $data = [
+        'baseUrl' => $base_url,
+        'name' => $base_url,
+        'urls' => $urls,
+        'staging' => '',
+        'scanUrl' => '',
+      ];
+      return Diffy::request('POST', 'projects', $data);
+    }
+
 }

@@ -17,6 +17,27 @@ class Diffy
     public static $client;
 
     /**
+     * Init guzzle client.
+     *
+     * @return \GuzzleHttp\Client
+     */
+    public static function getClient() {
+      if (empty(self::$client)) {
+        self::$client = new Client(
+          [
+            'base_uri' => self::getApiBaseUrl(),
+            'headers' => [
+              'Accept' => 'application/json',
+              'Content-Type' => 'application/json',
+            ],
+          ]
+        );
+      }
+
+      return self::$client;
+    }
+
+    /**
      * @return string The API key used for requests.
      */
     public static function getApiKey()
@@ -67,19 +88,9 @@ class Diffy
      */
     public static function refreshToken()
     {
-        if (empty(self::$client)) {
-            self::$client = new Client(
-                [
-                    'base_uri' => self::getApiBaseUrl(),
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/json',
-                    ],
-                ]
-            );
-        }
 
-        $response = self::$client->request(
+
+        $response = self::getClient()->request(
             'POST',
             'auth/key',
             [
@@ -107,12 +118,14 @@ class Diffy
         }
 
         try {
-            $response = self::$client->request($type, $uri, $params);
+            $response = self::getClient()->request($type, $uri, $params);
             $responseBodyAsString = json_decode($response->getBody()->getContents(), true);
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
                 $statusCode = $response->getStatusCode();
+
+                $responseBodyAsString = $response->getBody()->getContents();
 
                 if ($statusCode == '400') {
                     // Diffy knows errors. We need this code because of GuzzleHttp truncated errors.
