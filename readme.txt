@@ -14,7 +14,7 @@ Ideally you expect zero changes after running updates.
 
 == Set up instructions ==
 
-You need to have active Diffy ["https://diffy.website"](https://diffy.website?utm_source=github&utm_campaign=wordpress-plugin) account in order to use this plugin. Plugin will also allow you to create an account and project for your site with one click.
+You need to have active Diffy [diffy.website](https://diffy.website?utm_source=github&utm_campaign=wordpress-plugin) account in order to use this plugin. Plugin will also allow you to create an account and project for your site with one click.
 
 Diffy provides 2 weeks trial to cover up to 100 pages of your site.
 
