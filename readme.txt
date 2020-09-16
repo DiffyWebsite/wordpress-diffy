@@ -4,6 +4,7 @@ Tags: visual regression testing, updates verification, automated testing
 Requires at least: 4.8
 Tested up to: 5.5.0
 Requires PHP: 7.0
+Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Development: https://github.com/DiffyWebsite/wordpress-diffy
