@@ -54,8 +54,7 @@ function diffy_missing_autoload() {
  * Returns the notice in case of missing Composer autoload.
  */
 function diffy_missing_autoload_notice() {
-  /* translators: %1$s expands to Yoast SEO, %2$s / %3$s: links to the installation manual in the Readme for the Yoast SEO code repository on GitHub */
-  $message = esc_html__( 'The %1$s plugin installation is incomplete. Please refer to %2$sinstallation instructions%3$s.', 'wordpress-diffy' );
+  $message = esc_html__( 'The %1$s plugin installation is incomplete. Misses autoload files. Please refer to %2$sinstallation instructions%3$s.', 'wordpress-diffy' );
   $message = sprintf( $message, 'Diffy', '<a href="https://github.com/DiffyWebsite/wordpress-diffy#installation">', '</a>' );
   echo '<div class="error"><p>' . esc_html__( 'Activation failed:', 'wordpress-diffy' ) . ' ' . strip_tags( $message, '<a>' ) . '</p></div>';
 }
