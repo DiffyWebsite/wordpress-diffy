@@ -95,7 +95,7 @@ class Diffy_Admin {
 
     if (count($scan_urls) == 1) {
       wp_send_json_error([
-        'error_message' => 'Looks like your site is not accessible. We have found only one internal page. Please make sure it can be accessed from Internet. If it is local development, please use this plugin on hosting environment instead',
+        'error_message' => 'Looks like your site is not accessible. We have found only one internal page. Please make sure it can be accessed from Internet. If it is local development, please use this plugin on hosting environment instead. We have created an account for you in Diffy email ' . $email . ' and password ' . $password,
       ]);
     }
 

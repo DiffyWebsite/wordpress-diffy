@@ -11,8 +11,9 @@
         'action' : 'diffy_register'
       };
       $.post( settings.ajaxurl, data, function( response ) {
+        var data = response.data;
+
         if (response.success) {
-          var data = response.data;
           var success_message = '<div id="setting-error-settings_updated" class="notice notice-success settings-error is-dismissible"> \n' +
               '<p><strong>Diffy account & project created.</strong> It is created by using your email address "' + data.email + '" and password "' + data.password + '". Please note these credentials. But no worries you can always reset the password if you need to.</p></div>';
           $('.diffy-register-wrapper').html(success_message);

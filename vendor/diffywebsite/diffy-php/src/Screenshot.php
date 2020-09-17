@@ -103,7 +103,7 @@ class Screenshot
      */
     public function isCompleted()
     {
-        return in_array($this->data['state'], [self::COMPLETED, self::ZIPFILE]);
+        return in_array($this->data['state'], [self::COMPLETED, self::COMPLETED_HOOK_EXECUTED, self::ZIPFILE]);
     }
 
 
