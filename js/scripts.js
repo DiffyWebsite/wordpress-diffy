@@ -4,8 +4,8 @@
     $('#diffy-register').click(function() {
       $('.diffy-register-error').remove();
 
-      $('#diffy-register').html('Registering a user and creating project...');
-      $('#diffy-register').attr('disabled', true);
+      $('.diffy-register-wrapper').after('<div class="updating-message"><p>Registering a user and creating project...</p></div>');
+      $('.diffy-register-wrapper').hide();
 
       var data = {
         'action' : 'diffy_register'
@@ -18,6 +18,7 @@
               '<p><strong>Diffy account & project created.</strong> It is created by using your email address "' + data.email + '" and password "' + data.password + '". Please note these credentials. But no worries you can always reset the password if you need to.</p></div>';
           $('.diffy-register-wrapper').html(success_message);
 
+
           $('input[name=diffy_api_key]').val(data.diffy_api_key);
           $('input[name=diffy_project_id]').val(data.diffy_project_id);
         }
@@ -25,10 +26,9 @@
           var error_message = '<div id="setting-error-settings_updated" class="diffy-register-error notice notice-error settings-error is-dismissible"> \n' +
               '<p><strong>' + data.error_message + '.</strong> Please go to <a target="_blank" href="https://app.diffy.website">Diffy app</a> and retrieve API Key and set up the project manually.</p></div>';
           $('.diffy-register-wrapper').append(error_message);
-
-          $('#diffy-register').html('One click register');
-          $('#diffy-register').attr('disabled', false);
         }
+        $('.updating-message').remove();
+        $('.diffy-register-wrapper').show();
       })
       .fail(function() {
         console.log( "Ajax error" );

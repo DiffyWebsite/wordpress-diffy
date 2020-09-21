@@ -150,8 +150,10 @@ class Diffy_Admin {
   public function registerAndBuildFields() {
     // Two settings API Key and Project ID.
     register_setting('reading', 'diffy_api_key');
-    register_setting('reading', 'diffy_project_id');
-    register_setting('other', 'diffy_last_screenshot_id');
+    register_setting('reading', 'diffy_project_id', [$this, 'diffy_validate_project_id_callback']);
+    register_setting('other', 'diffy_first_screenshot_id');
+    register_setting('other', 'diffy_second_screenshot_id');
+    register_setting('other', 'diffy_diff_id');
 
     // Introduction section.
     add_settings_section(
@@ -220,6 +222,73 @@ EOT;
       return;
     }
     require_once 'wordpress-diffy-settings-form.php';
+  }
+
+  /**
+   * Validate if settings are saved correctly.
+   */
+  public function diffy_validate_project_id_callback($project_id) {
+    $diffy_api_key = get_option('diffy_api_key');
+
+    if (empty($diffy_api_key)) {
+      add_settings_error(
+        'diffy',
+        'diffy',
+        __( 'Please add API Key' ),
+        'error'
+      );
+      return $project_id;
+    }
+
+    if (empty($project_id)) {
+      add_settings_error(
+        'diffy',
+        'diffy',
+        __( 'Please add Project ID' ),
+        'error'
+      );
+      return $project_id;
+    }
+
+    try {
+      \Diffy\Diffy::setApiKey($diffy_api_key);
+    }
+    catch (\Exception $exception) {
+      add_settings_error(
+        'diffy',
+        'diffy',
+        sprintf( __( 'Invalid API Key %s' ), $diffy_api_key),
+        'error'
+      );
+      return $project_id;
+    }
+
+    try {
+      $project = \Diffy\Project::get($project_id);
+    }
+    catch (\Exception $exception) {
+
+    }
+
+    if (empty($project)) {
+      add_settings_error(
+        'diffy',
+        'diffy',
+        sprintf( __( 'Invalid Project ID %s' ), $project_id),
+        'error'
+      );
+      return $project_id;
+    }
+
+    add_settings_error(
+      'diffy',
+      'diffy',
+      /* translators: %d: Number of requests. */
+      __( 'We have verified your API Key and Project ID. You are good to go.' ),
+      'success'
+    );
+
+    return $project_id;
   }
 
 }

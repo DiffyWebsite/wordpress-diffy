@@ -1,10 +1,10 @@
-=== Diffy ===
+=== Diffy Visual Regression Testing ===
 Contributors: ygerasimov
 Tags: visual regression testing, updates verification, automated testing
 Requires at least: 4.8
-Tested up to: 5.5.0
+Tested up to: 5.5.1
 Requires PHP: 7.0
-Stable tag: 0.9.1
+Stable tag: 0.9.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Development: https://github.com/DiffyWebsite/wordpress-diffy

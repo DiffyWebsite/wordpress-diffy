@@ -83,7 +83,7 @@ class Diff
      * Load full info on Diff.
      *
      * @param int $diffId
-     * @return mixed
+     * @return \Diffy\Diff
      */
     public static function retrieve(int $diffId)
     {
@@ -109,6 +109,29 @@ class Diff
     public function isCompleted()
     {
         return in_array($this->data['state'], [self::COMPLETED, self::ZIPFILE, self::COMPLETED_HOOK_EXECUTED, self::WITHOUT_ZIP]);
+    }
+
+    /**
+     * How long it will take to complete the diff.
+     *
+     * @return string
+     */
+    public function getEstimate()
+    {
+      return 'under 1 minute';
+    }
+
+    /**
+     * How long it will take to complete the diff.
+     *
+     * @return string
+     */
+    public function getReadableResult()
+    {
+      if ($this->data['result'] == 0) {
+        return 'No changes found';
+      }
+      return sprintf('%d% pages changed. <a target="_blank" href="%s">See the report</a>', $this->data['result'], $this->data['diffSharedUrl']);
     }
 
     /**

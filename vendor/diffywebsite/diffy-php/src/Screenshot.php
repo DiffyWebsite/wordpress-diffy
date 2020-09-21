@@ -78,7 +78,7 @@ class Screenshot
      * Load full info on Screenshot.
      *
      * @param \Diffy\int $screenshotId
-     * @return mixed
+     * @return \Diffy\Screenshot
      */
     public static function retrieve(int $screenshotId)
     {
@@ -104,6 +104,11 @@ class Screenshot
     public function isCompleted()
     {
         return in_array($this->data['state'], [self::COMPLETED, self::COMPLETED_HOOK_EXECUTED, self::ZIPFILE]);
+    }
+
+    public function getEstimate()
+    {
+      return $this->data['status']['estimate'];
     }
 
 
