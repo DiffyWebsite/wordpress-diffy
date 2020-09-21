@@ -37,6 +37,14 @@ You will receive an email notifications about screenshots and diffs being comple
 
 Review the report and ensure that nothing got broken.
 
+== Screenshots ==
+
+1. Diffy embeds to the process of updating plugin. Creates screenshots before updates applied.
+2. Diffy creates screenshots after update, compares with "before" version.
+3. You can see that Diffy found changes right away and can check the report.
+4. Report has thumbnails view.
+5. Full view of reviewing single difference.
+
 == Support ==
 
 Welcome to reach out to Diffy's team via Intercom or by email info@diffy.website.
