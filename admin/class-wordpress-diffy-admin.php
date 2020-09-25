@@ -149,8 +149,8 @@ class Diffy_Admin {
    */
   public function registerAndBuildFields() {
     // Two settings API Key and Project ID.
-    register_setting('reading', 'diffy_api_key');
-    register_setting('reading', 'diffy_project_id', [$this, 'diffy_validate_project_id_callback']);
+    register_setting('diffy', 'diffy_api_key');
+    register_setting('diffy', 'diffy_project_id', [$this, 'diffy_validate_project_id_callback']);
     register_setting('other', 'diffy_first_screenshot_id');
     register_setting('other', 'diffy_second_screenshot_id');
     register_setting('other', 'diffy_diff_id');
@@ -160,21 +160,21 @@ class Diffy_Admin {
       'diffy_settings_section',
       'How this works?',
       [$this, 'diffy_introduction_section_callback'],
-      'reading'
+      'diffy'
     );
 
     add_settings_field(
       'diffy_api_key_settings_field',
       'API Key',
       [$this, 'diffy_api_key_settings_field_callback'],
-      'reading',
+      'diffy',
       'diffy_settings_section'
     );
     add_settings_field(
       'diffy_project_id_settings_field',
       'Project ID',
       [$this, 'diffy_project_id_settings_field_callback'],
-      'reading',
+      'diffy',
       'diffy_settings_section'
     );
   }

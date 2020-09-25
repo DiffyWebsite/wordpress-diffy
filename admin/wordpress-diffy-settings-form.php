@@ -17,8 +17,8 @@
 
   <form method="POST" action="options.php">
     <?php
-    settings_fields( 'reading' );
-    do_settings_sections( 'reading' );
+    settings_fields( 'diffy' );
+    do_settings_sections( 'diffy' );
     ?>
     <?php submit_button(); ?>
   </form>
