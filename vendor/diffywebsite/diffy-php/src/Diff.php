@@ -131,7 +131,7 @@ class Diff
       if ($this->data['result'] == 0) {
         return 'No changes found';
       }
-      return sprintf('%d% pages changed. <a target="_blank" href="%s">See the report</a>', $this->data['result'], $this->data['diffSharedUrl']);
+      return sprintf('%d%% pages changed. <a target="_blank" href="%s">See the report</a>', (int)$this->data['result'], $this->data['diffSharedUrl']);
     }
 
     /**

@@ -79,6 +79,10 @@ function diffy_self_deactivate() {
  * Runs when we start upgrade process. Create first set of screenshots.
  */
 function diffy_create_first_screenshots($options) {
+  // Upgrade was run without Diffy coverage.
+  if (!isset($_POST['testing'])) {
+    return $options;
+  }
   add_settings_error(
     'diffy',
     'diffy',
@@ -135,6 +139,8 @@ function diffy_create_second_screenshots_diff() {
 
     $diff_id = \Diffy\Diff::create($diffy_project_id, $first_screenshot_id, $second_screenshot_id);
     update_option('diffy_diff_id', $diff_id);
+
+	update_option('diffy_first_screenshot_id', '');
   }
   catch (\Exception $e) {
     return;
