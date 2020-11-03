@@ -72,7 +72,7 @@
   // Triggered right before ajax request is sent to update plugin.
   $( document ).on('wp-plugin-updating', function(){
   	if (Diffy.progress == 1) {
-			$('.update-message').after('<div class="notice inline notice-alt notice-info"><p class="diffy-message">Diffy creates first set of screenshots (before update).</p></div>');
+			$('.updating-message').after('<div class="notice inline notice-alt notice-info"><p class="diffy-message">Diffy creates first set of screenshots (before update).</p></div>');
 
 			showDiffyStatus('diffy_first_screenshots');
 		}
