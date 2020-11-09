@@ -1,0 +1,13 @@
+.wordpress-diffy-arrow {
+    transform: rotate(180deg);
+    width: 100px;
+    position: absolute;
+    left: 120px;
+    top: -50px;
+    opacity: 0;
+    transition: .5s opacity ease-in-out;
+}
+
+.wordpress-diffy-arrow-active {
+    opacity: 1;
+}

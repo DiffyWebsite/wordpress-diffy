@@ -35,7 +35,14 @@ elseif ( ! class_exists( 'Diffy\Diffy' ) ) { // Still checking since might be si
 
 // Load admin pages.
 require_once dirname( __FILE__ ) . '/admin/class-wordpress-diffy-admin.php';
-$admin = new Diffy_Admin('wordpress-diffy', '0.9.0');
+
+if ( class_exists( 'Diffy_Admin' ) ) {
+  // Installation hook
+  register_activation_hook( __FILE__, array( 'Diffy_Admin', 'activate' ) );
+
+  // instantiate the plugin class    
+  $admin = new Diffy_Admin( 'wordpress-diffy', '0.9.0' );
+}
 
 /**
  * Throw an error if the Composer autoload is missing and self-deactivate plugin.
