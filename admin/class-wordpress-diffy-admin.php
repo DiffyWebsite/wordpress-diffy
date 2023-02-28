@@ -186,7 +186,12 @@ class Diffy_Admin {
         <p>Steps to set up:
           <ol>
               <li><a target="_blank" href="https://app.diffy.website">Register an account</a> and create an API key at <a target="_blank" href="https://app.diffy.website/#/keys">My Account -> Keys</a>. Copy API Key here.</li>
-              <li>Create a project in Diffy and save its ID at this form.</li>
+              <li>Create a project in Diffy.</li>
+              <li>Open the project page in Diffy.</li>
+              <li>
+                Get the project ID from the URL and save it in this form.<br>
+                <i>(Example: if the URL is https://app.diffy.website/#/projects/1, then project ID is 1)</i>
+              </li>
               <li>Run plugins update and see comparison of "before" and "after" screenshots created in Diffy. You will receive an email notification with the results.</li>
           </ol>
        </p>
@@ -247,6 +252,12 @@ EOT;
         __( 'Please add Project ID' ),
         'error'
       );
+      return $project_id;
+    }
+
+    if (!is_numeric(trim($project_id))) {
+      add_settings_error('diffy', 'diffy', __( 'Project ID should be a number' ), 'error');
+
       return $project_id;
     }
 
