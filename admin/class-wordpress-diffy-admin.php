@@ -17,49 +17,9 @@ class Diffy_Admin {
     add_action('admin_menu', array($this, 'addPluginAdminMenu'), 9);
     add_action('admin_init', array($this, 'registerAndBuildFields'));
 
-    // Init function on plugin activation
-    add_action( 'init', array( $this, 'load_plugin' ) );
-
     // Add javascript to the form.
-    add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
+    add_action('admin_enqueue_scripts', array($this, 'scripts'));
     add_action( 'wp_ajax_diffy_register', array( $this, 'diffy_register' ) );
-
-    // Add styles to the admin page.
-    add_action( 'admin_enqueue_scripts', array( $this, 'styles' ) );
-  }
-
-  /**
-   * Activate the plugin
-   */
-  public function activate() {
-    add_option( 'activated_plugin', 'wordpress-diffy' ); //ToDo
-  }
-
-  /**
-   * Enqueue styles and scripts after plugin activation
-   */
-  public function load_plugin() {
-    if ( is_admin() && get_option( 'activated_plugin' ) == 'wordpress-diffy' ) {
-
-        delete_option( 'activated_plugin' );
-        
-        wp_enqueue_script(
-          'diffy-custom',
-          plugin_dir_url(__FILE__) . '../js/custom.js',
-          array('jquery'),
-          NULL,
-          TRUE
-        );
-
-        // set variables for script
-        wp_localize_script(
-          'diffy-custom',
-          'params',
-          array(
-            'pluginPath' => plugin_dir_url(__DIR__),
-          )
-        );
-    }
   }
 
   /**
@@ -84,18 +44,6 @@ class Diffy_Admin {
       array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
       )
-    );
-  }
-
-  /**
-   * Add styles to the plugin.
-   */
-  public function styles() {
-    wp_enqueue_style(
-      'diffy-stylesheet',
-      plugin_dir_url(__FILE__) . '../css/style.css',
-      array(),
-      NULL
     );
   }
 
