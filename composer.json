@@ -12,12 +12,14 @@
 	],
 	"homepage": "https://diffy.website/wordpress",
 	"license": "GPL-2.0+",
-	"authors": [ {
-		"name": "Diffy",
-		"homepage": "https://diffy.website/about"
-	} ],
+	"authors": [
+		{
+			"name": "Diffy",
+			"homepage": "https://diffy.website/about"
+		}
+	],
 	"require": {
-		"diffywebsite/diffy-php": "1.x-dev",
-		"php": ">=5.3.0"
+		"php": ">=7.1",
+		"diffywebsite/diffy-php": "1.x-dev"
 	}
 }

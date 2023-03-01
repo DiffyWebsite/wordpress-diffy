@@ -15,7 +15,7 @@
  * Description: Diffy allows you to see if any of your updates caused visual changes on the site.
  * Author:      Diffy
  * Author URI:  https://diffy.website/
- * Version:     0.9.5
+ * Version:     0.9.6
  * License:     GPLv2 or later (license.txt)
  */
 

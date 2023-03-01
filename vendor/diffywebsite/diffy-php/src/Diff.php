@@ -2,14 +2,11 @@
 
 namespace Diffy;
 
-/**
- * Class to interact with Diffs.
- */
 class Diff
 {
-
     // Statuses of the Diff:
     const NOTSTARTED = 0;
+
     // If there are not completed snapshots (they are in progress).
     // The difference between these two is non-trivial. SNAPSHOT_IN_PROGRESS
     // is when Diff has *active jobs*. I.e. our queue has jobs that we process.
@@ -39,9 +36,6 @@ class Diff
 
     public $diffId;
 
-    /**
-     * Diff constructor.
-     */
     protected function __construct(int $diffId)
     {
         $this->diffId = $diffId;
@@ -53,30 +47,52 @@ class Diff
      * @param int $projectId
      * @param int $screenshotId1
      * @param int $screenshotId2
+     * @param string $name
      * @return mixed
      * @throws \Diffy\InvalidArgumentsException
      */
-    public static function create(int $projectId, int $screenshotId1, int $screenshotId2)
+    public static function create(int $projectId, int $screenshotId1, int $screenshotId2, string $name = '')
     {
-
         if (empty($projectId)) {
             throw new InvalidArgumentsException('Project ID can not be empty');
         }
+
         if (empty($screenshotId1)) {
             throw new InvalidArgumentsException('Screenshot 1 ID can not be empty');
         }
+
         if (empty($screenshotId2)) {
             throw new InvalidArgumentsException('Screenshot 2 ID can not be empty');
         }
 
-        return Diffy::request(
-            'POST',
-            'projects/'.$projectId.'/diffs',
-            [
-                'snapshot1' => $screenshotId1,
-                'snapshot2' => $screenshotId2,
-            ]
-        );
+        return Diffy::request('POST', 'projects/' . $projectId . '/diffs', [
+            'snapshot1' => $screenshotId1,
+            'snapshot2' => $screenshotId2,
+            'name' => $name,
+        ]);
+    }
+
+    /**
+     * Update diff's name.
+     *
+     * @param int $diffId
+     * @param string $name
+     * @return mixed
+     * @throws InvalidArgumentsException
+     */
+    public static function updateName(int $diffId, string $name)
+    {
+        if (empty($diffId)) {
+            throw new InvalidArgumentsException('Diff ID can not be empty');
+        }
+
+        if (empty($name)) {
+            throw new InvalidArgumentsException('Name can not be empty');
+        }
+
+        return Diffy::request('PUT', 'diffs/' . $diffId, [
+            'name' => $name,
+        ]);
     }
 
     /**
@@ -98,7 +114,7 @@ class Diff
      */
     public function refresh()
     {
-        $this->data = Diffy::request('GET', 'diffs/'.$this->diffId);
+        $this->data = Diffy::request('GET', 'diffs/' . $this->diffId);
     }
 
     /**
@@ -118,7 +134,7 @@ class Diff
      */
     public function getEstimate()
     {
-      return 'under 1 minute';
+        return 'under 1 minute';
     }
 
     /**
@@ -128,10 +144,11 @@ class Diff
      */
     public function getReadableResult()
     {
-      if ($this->data['result'] == 0) {
-        return 'No changes found';
-      }
-      return sprintf('%d%% pages changed. <a target="_blank" href="%s">See the report</a>', (int)$this->data['result'], $this->data['diffSharedUrl']);
+        if ($this->data['result'] == 0) {
+            return 'No changes found';
+        }
+
+        return sprintf('%d%% pages changed. <a target="_blank" href="%s">See the report</a>', (int)$this->data['result'], $this->data['diffSharedUrl']);
     }
 
     /**
@@ -141,19 +158,16 @@ class Diff
      */
     public function isFailed()
     {
-        return !in_array(
-            $this->data['state'],
-            [
-                self::NOTSTARTED,
-                self::SNAPSHOT_IN_PROGRESS_DIFF_IN_PROGRESS,
-                self::SNAPSHOT_IN_PROGRESS,
-                self::PROGRESS,
-                self::COMPLETED,
-                self::ZIPFILE,
-                self::COMPLETED_HOOK_EXECUTED,
-                self::WITHOUT_ZIP,
-            ]
-        );
+        return !in_array($this->data['state'], [
+            self::NOTSTARTED,
+            self::SNAPSHOT_IN_PROGRESS_DIFF_IN_PROGRESS,
+            self::SNAPSHOT_IN_PROGRESS,
+            self::PROGRESS,
+            self::COMPLETED,
+            self::ZIPFILE,
+            self::COMPLETED_HOOK_EXECUTED,
+            self::WITHOUT_ZIP,
+        ]);
     }
 
     /**
@@ -174,49 +188,43 @@ class Diff
      *
      * @param int $projectId
      * @param int $page
+     *
      * @return mixed
+     *
      * @throws InvalidArgumentsException
      */
     public static function list(int $projectId, int $page = 0)
     {
-
         if (empty($projectId)) {
             throw new InvalidArgumentsException('Project ID can not be empty');
         }
 
-        return Diffy::request(
-            'GET',
-            'projects/'.$projectId.'/diffs?page='.$page
-        );
+        return Diffy::request('GET', 'projects/' . $projectId . '/diffs?page=' . $page);
     }
 
     /**
      * Get diff state name.
      *
      * @param $state
+     *
      * @return string
      */
     public static function getStateName($state)
     {
-        $name = '';
         switch ($state) {
             case self::NOTSTARTED:
-                $name = 'Not started';
-                break;
+                return 'Not started';
             case self::PROGRESS:
             case self::SNAPSHOT_IN_PROGRESS:
             case self::SNAPSHOT_IN_PROGRESS_DIFF_IN_PROGRESS:
-                $name = 'In progress';
-                break;
+                return 'In progress';
             case self::COMPLETED:
             case self::COMPLETED_HOOK_EXECUTED:
             case self::ZIPFILE:
             case self::WITHOUT_ZIP:
-                $name = 'Completed';
-                break;
+                return 'Completed';
         }
 
-        return $name;
+        return '';
     }
-
 }

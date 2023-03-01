@@ -24,12 +24,15 @@ $key = 'c31fec8e123e479e75d46744c13a7d91';
 //print_r(\Diffy\Screenshot::setBaselineSet($project_id, $screenshot_id));
 
 // Compare environments.
-//print_r(\Diffy\Project::compare($project_id, ['env1' => 'prod', 'env2' => 'stage']));
+//$diffId = \Diffy\Project::compare($project_id, ['env1' => 'prod', 'env2' => 'prod']);
 
 // Create a Diff.
 //$screenshot_id1 = \Diffy\Screenshot::create($project_id, 'production');
 //$screenshot_id2 = \Diffy\Screenshot::create($project_id, 'staging');
-//print_r(\Diffy\Diff::create($project_id, $screenshot_id1, $screenshot_id2));
+//$diffId = \Diffy\Diff::create($project_id, $screenshot_id1, $screenshot_id2);
+
+// Update diff's name.
+//\Diffy\Diff::updateName($diffId, 'new name for diff');
 
 // Create custom screenshot with file uploads.
 //$screenshotName = 'custom test';
