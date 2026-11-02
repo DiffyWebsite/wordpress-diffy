@@ -1,0 +1,28 @@
+name: Deploy to WordPress.org
+
+# Push a tag that matches the "Stable tag" in readme.txt (for example "1.0.0", without a "v")
+# and this workflow publishes that version to https://wordpress.org/plugins/diffy/.
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  deploy:
+    name: Deploy tag to WordPress.org
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check that the tag matches the plugin version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          grep -q "^Stable tag: ${TAG}$" readme.txt || { echo "readme.txt Stable tag is not ${TAG}"; exit 1; }
+          grep -q "Version: *${TAG}$" wordpress-diffy.php || { echo "Plugin header Version is not ${TAG}"; exit 1; }
+
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: diffy
