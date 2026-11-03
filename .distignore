@@ -1,6 +1,5 @@
 /.git
 /.github
-/.wordpress-org
 /Dockerfile
 .distignore
 .gitignore

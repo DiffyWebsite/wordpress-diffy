@@ -16,8 +16,33 @@ The plugin uses the Diffy API, which is included in Diffy's paid plans.
 
 ## Releasing
 
-1. Bump the version in `wordpress-diffy.php` (header and `DIFFY_PLUGIN_VERSION`), the `Stable tag` in `readme.txt`, and add a changelog entry.
-2. Merge to `master`, then push a tag with the same version, without a `v`: `git tag 1.0.1 && git push origin 1.0.1`.
-3. The "Deploy to WordPress.org" workflow publishes it to the plugin's SVN repository. It needs the `SVN_USERNAME` and `SVN_PASSWORD` secrets of a WordPress.org account that has commit access to the plugin.
+Releases are published by hand to the plugin's SVN repository on WordPress.org. You need a WordPress.org account that is a committer on the plugin, with two-factor authentication on and an SVN password (profiles.wordpress.org → Edit profile → Account & Security → SVN credentials → Generate Password), and `svn` installed (`brew install subversion` on macOS).
 
-Files listed in `.distignore` are not published. Banner, icon and screenshot images live in the SVN `assets` directory; to manage them from here, add a `.wordpress-org` directory with all of them (the workflow replaces the whole `assets` directory with its contents).
+1. Bump the version in `wordpress-diffy.php` (header and `DIFFY_PLUGIN_VERSION`), the `Stable tag` in `readme.txt`, and add a changelog entry. Merge to `master`.
+2. Check out the SVN repository next to this one (only `trunk` and the empty `tags` directory):
+
+   ```bash
+   svn checkout --depth immediates https://plugins.svn.wordpress.org/diffy diffy-svn
+   cd diffy-svn
+   svn update --set-depth infinity trunk
+   ```
+
+3. Copy the plugin into `trunk`, leaving out the files listed in `.distignore`, and tell SVN about added and removed files:
+
+   ```bash
+   rsync -a --delete --exclude-from=../wordpress-diffy/.distignore ../wordpress-diffy/ trunk/
+   svn add --force trunk
+   svn status trunk | grep '^!' | sed 's/^! *//' | xargs -I% svn rm %
+   ```
+
+4. Tag the version (the same number as `Stable tag`, without a `v`), check the changes and commit:
+
+   ```bash
+   svn cp trunk tags/1.0.1
+   svn status
+   svn commit -m "Release 1.0.1" --username YOUR_WORDPRESS_ORG_USERNAME
+   ```
+
+5. Tag the release in git too: `git tag 1.0.1 && git push origin 1.0.1`.
+
+Banner, icon and screenshot images live in the SVN `assets` directory, not in this repository.
