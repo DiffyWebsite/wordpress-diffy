@@ -88,11 +88,12 @@ No data is sent to Diffy unless you use one of these features. See Diffy's [term
 
 == Screenshots ==
 
-1. Diffy takes screenshots before the plugin update is applied.
-2. After the update, Diffy takes a second set of screenshots and compares them with the "before" set.
-3. Diffy found changes, and the report is one click away.
-4. The report's thumbnail view.
-5. Reviewing a single difference in full view.
+1. On the Plugins screen, every available update gets an extra link: "update now with Diffy visual testing".
+2. Diffy takes the first set of screenshots before WordPress starts the update.
+3. Once WordPress has installed the update, Diffy takes a second set of screenshots and compares the two.
+4. In the Diffy app, the comparison waits for your review next to the before and after screenshot sets.
+5. Every changed page, with the differences highlighted. Approve the changes you expected and mark the rest as bugs.
+6. One page in detail: the changes highlighted on the left, and the before and after screenshots compared with a slider on the right.
 
 == Changelog ==
 
