@@ -258,7 +258,7 @@ class Diffy_Admin {
 		);
 		?>
 		<p><?php echo wp_kses( __( 'This plugin adds <a target="_blank" rel="noopener" href="https://diffy.website/wordpress/">visual regression testing</a> to your plugin updates: Diffy screenshots your pages before and after the update and shows you what changed.', 'diffy' ), $allowed ); ?></p>
-		<p><?php echo wp_kses( __( 'The plugin uses the Diffy API, which is included in Diffy\'s <a target="_blank" rel="noopener" href="https://diffy.website/pricing/">paid plans</a>.', 'diffy' ), $allowed ); ?></p>
+		<p><?php echo wp_kses( __( 'The plugin uses the Diffy API, which is included in every Diffy plan, the <a target="_blank" rel="noopener" href="https://diffy.website/pricing/">free plan</a> too.', 'diffy' ), $allowed ); ?></p>
 		<p><?php esc_html_e( 'Steps to set up:', 'diffy' ); ?></p>
 		<ol>
 			<li><?php echo wp_kses( __( '<a target="_blank" rel="noopener" href="https://app.diffy.website/#/register">Register an account</a>, create an API key in the Diffy app under your account settings, and paste it below.', 'diffy' ), $allowed ); ?></li>

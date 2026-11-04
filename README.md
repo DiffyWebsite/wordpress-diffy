@@ -6,7 +6,7 @@ WordPress plugin that screenshots your site before and after a plugin update and
 
 Install it from **Plugins → Add New** in WordPress, or download this repository into `wp-content/plugins/diffy`. The `vendor/` directory is committed, so no Composer step is needed. Then open **Diffy** in the admin menu and enter an API key and project ID, or use **One-click register**.
 
-The plugin uses the Diffy API, which is included in Diffy's paid plans.
+The plugin uses the Diffy API, which is included in every Diffy plan, the free plan too.
 
 ## How it works
 

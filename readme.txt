@@ -26,7 +26,7 @@ Ideally the comparison finds no changes. When it does, the report highlights exa
 = What you need =
 
 * A Diffy account and a project for this site. The plugin can create both for you with one click.
-* A Diffy plan that includes API access. The plugin talks to Diffy through its API, which is included in Diffy's [paid plans](https://diffy.website/pricing/).
+* Any Diffy plan, the free one too. The plugin talks to Diffy through its API, which every plan includes.
 * A site that can be reached from the internet. Diffy takes the screenshots from its own servers, so local development sites won't work.
 
 = Why Diffy =
@@ -54,7 +54,7 @@ Yes. The plugin can create one for you with one click from its settings page, us
 
 = Which Diffy plan do I need? =
 
-A plan with API access, because the plugin creates screenshots and comparisons through the Diffy API. API access is included in Diffy's paid plans. See [pricing](https://diffy.website/pricing/).
+Any plan, the free one too. The plugin creates screenshots and comparisons through the Diffy API, which every plan includes. One page at one screen width is one screenshot, and each check takes a set before and a set after the update, so it uses two screenshots per page and width. See [pricing](https://diffy.website/pricing/) for how many screenshots each plan includes.
 
 = Which pages are tested? =
 
@@ -99,7 +99,7 @@ No data is sent to Diffy unless you use one of these features. See Diffy's [term
 = 1.0.0 =
 * Tested with WordPress 7.1 and PHP 8.3.
 * Security: nonce and capability checks on all AJAX requests, and sanitized settings.
-* Errors from Diffy (for example, a plan without API access) are now shown on the Plugins screen instead of failing silently.
+* Errors from the Diffy API are now shown on the Plugins screen instead of failing silently.
 * The "update now with Diffy visual testing" link only appears once the API key and project ID are saved.
 * Plugin text is ready for translation (text domain "diffy").
 * Updated the plugin description, setup instructions and FAQ.
