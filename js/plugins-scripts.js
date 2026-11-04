@@ -1,31 +1,70 @@
 ( function( $ ) {
+	'use strict';
 
-	Diffy = {};
+	var diffyInProgress = false;
+	var i18n = diffySettings.i18n;
 
-	$( document ).ready(function() {
-		$('.update-message a.update-link').each(function(){
-			var href=$(this).attr('href');
-			if (href.indexOf('upgrade-plugin') > 0) {
-				$(this).after(' or <a class="diffy-update-link" href="' + href + '">update now with Diffy visual testing</a>');
+	/**
+	 * Poll the backend for the status of a Diffy job and show it to the user.
+	 *
+	 * @param {string} jobType AJAX action name.
+	 */
+	function showDiffyStatus( jobType ) {
+		var failures = 0;
+		var interval = setInterval( function() {
+			$.post( diffySettings.ajaxurl, {
+				action: jobType,
+				nonce: diffySettings.nonce
+			} )
+				.done( function( response ) {
+					var data = response.data || {};
+
+					failures = 0;
+					if ( response.success ) {
+						if ( 'completed' === data.status || 'failed' === data.status ) {
+							clearInterval( interval );
+						}
+						// Messages are escaped on the server; the completed message may contain a report link.
+						$( '.diffy-message' ).html( data.message );
+					} else {
+						clearInterval( interval );
+						$( '.diffy-message' ).text( data.error_message || '' );
+					}
+				} )
+				.fail( function() {
+					// The site is briefly in maintenance mode while core installs the update. Keep trying for a minute.
+					failures++;
+					if ( failures > 12 ) {
+						clearInterval( interval );
+					}
+				} );
+		}, 5000 );
+	}
+
+	$( function() {
+		$( '.update-message a.update-link' ).each( function() {
+			var href = $( this ).attr( 'href' );
+			if ( href && href.indexOf( 'upgrade-plugin' ) > 0 ) {
+				$( this ).after(
+					$( '<span></span>' ).text( ' ' + i18n.or + ' ' ),
+					$( '<a class="diffy-update-link"></a>' ).attr( 'href', href ).text( i18n.updateWithDiffy )
+				);
 			}
-		});
+		} );
 
-		// Copied from updates.js with adding extra argument to the ajax call.
-		// Also class of the link to listen "diffy-update-link" instead of "update-link".
-		var $bulkActionForm      = $( '#bulk-action-form' );
-		$bulkActionForm.on( 'click', '[data-plugin] .diffy-update-link', function( event ) {
-
-			// Leave a state that we are updating by using Diffy.
-			Diffy.progress = 1;
-
+		// Copied from core's updates.js, with one extra argument in the AJAX call
+		// and listening to "diffy-update-link" instead of "update-link".
+		$( '#bulk-action-form' ).on( 'click', '[data-plugin] .diffy-update-link', function( event ) {
 			var $message   = $( event.target ),
-					$pluginRow = $message.parents( 'tr' );
+				$pluginRow = $message.parents( 'tr' );
 
 			event.preventDefault();
 
 			if ( $message.hasClass( 'updating-message' ) || $message.hasClass( 'button-disabled' ) ) {
 				return;
 			}
+
+			diffyInProgress = true;
 
 			wp.updates.maybeRequestFilesystemCredentials( event );
 
@@ -34,59 +73,32 @@
 			wp.updates.updatePlugin( {
 				plugin: $pluginRow.data( 'plugin' ),
 				slug:   $pluginRow.data( 'slug' ),
-				testing: "diffy" // This is the ONLY change from original function form updates.js
+				testing: 'diffy' // The only change from core's click handler.
 			} );
 		} );
+	} );
 
-	});
+	// Triggered right before the AJAX request to update the plugin is sent.
+	$( document ).on( 'wp-plugin-updating', function() {
+		if ( diffyInProgress ) {
+			$( '.updating-message' ).after(
+				$( '<div class="notice inline notice-alt notice-info"><p class="diffy-message"></p></div>' )
+			);
+			$( '.diffy-message' ).text( i18n.firstSet );
 
-  /**
-   * Call backend to check the job status and display its status to the user.
-   *
-   * @param string jobType
-   */
-  showDiffyStatus = function(jobType) {
-    var showDiffyStatusInterval = setInterval(function() {
-
-      var data = {
-        'action': jobType
-      };
-      $.post(settings.ajaxurl, data, function (response) {
-        var data = response.data;
-
-        if (response.success) {
-          if (response.data.status == 'completed') {
-            clearInterval(showDiffyStatusInterval);
-          }
-          $('.diffy-message').html(response.data.message);
-        } else {
-
-        }
-      })
-      .fail(function () {
-        console.log("Diffy ajax error");
-      });
-    }, 5000);
-  };
-
-  // Triggered right before ajax request is sent to update plugin.
-  $( document ).on('wp-plugin-updating', function(){
-  	if (Diffy.progress == 1) {
-			$('.updating-message').after('<div class="notice inline notice-alt notice-info"><p class="diffy-message">Diffy creates first set of screenshots (before update).</p></div>');
-
-			showDiffyStatus('diffy_first_screenshots');
+			showDiffyStatus( 'diffy_first_screenshots' );
 		}
-  });
+	} );
 
-  // Triggered after plugin was successfully updated.
-  $( document ).on('wp-plugin-update-success', function(){
-		if (Diffy.progress == 1) {
-			$('.diffy-message').html('Updates completed. Now Diffy creates second set of screenshots and comparison.');
+	// Triggered after the plugin was updated.
+	$( document ).on( 'wp-plugin-update-success', function() {
+		if ( diffyInProgress ) {
+			$( '.diffy-message' ).text( i18n.secondSet );
 
-			showDiffyStatus('diffy_second_screenshots');
+			showDiffyStatus( 'diffy_second_screenshots' );
 
-			Diffy.progress = 0;
+			diffyInProgress = false;
 		}
-  });
+	} );
 
-})( jQuery );
+} )( jQuery );

@@ -1,39 +1,52 @@
 ( function( $ ) {
+	'use strict';
 
-  $( document ).ready( function() {
-    $('#diffy-register').click(function() {
-      $('.diffy-register-error').remove();
+	function sprintf2( template, first, second ) {
+		return template.replace( '%1$s', first ).replace( '%2$s', second );
+	}
 
-      $('.diffy-register-wrapper').after('<div class="updating-message"><p>Registering a user and creating project...</p></div>');
-      $('.diffy-register-wrapper').hide();
+	function notice( type, text, link ) {
+		var $notice = $( '<div class="notice settings-error is-dismissible diffy-register-notice"><p></p></div>' ).addClass( 'notice-' + type );
+		$notice.find( 'p' ).text( text );
+		if ( link ) {
+			$notice.find( 'p' ).append( ' ' ).append( $( '<a target="_blank" rel="noopener"></a>' ).attr( 'href', link.url ).text( link.text ) );
+		}
+		return $notice;
+	}
 
-      var data = {
-        'action' : 'diffy_register'
-      };
-      $.post( settings.ajaxurl, data, function( response ) {
-        var data = response.data;
+	$( function() {
+		$( '#diffy-register' ).on( 'click', function() {
+			var i18n = diffySettings.i18n;
+			var $wrapper = $( '.diffy-register-wrapper' );
+			var $progress = $( '<div class="notice notice-info diffy-register-progress"><p></p></div>' );
 
-        if (response.success) {
-          var success_message = '<div id="setting-error-settings_updated" class="notice notice-success settings-error is-dismissible"> \n' +
-              '<p><strong>Diffy account & project created.</strong> It is created by using your email address "' + data.email + '" and password "' + data.password + '". Please note these credentials. But no worries you can always reset the password if you need to.</p></div>';
-          $('.diffy-register-wrapper').html(success_message);
+			$( '.diffy-register-notice' ).remove();
+			$progress.find( 'p' ).text( i18n.registering );
+			$wrapper.after( $progress ).hide();
 
+			$.post( diffySettings.ajaxurl, {
+				action: 'diffy_register',
+				nonce: diffySettings.nonce
+			} )
+				.done( function( response ) {
+					var data = response.data || {};
 
-          $('input[name=diffy_api_key]').val(data.diffy_api_key);
-          $('input[name=diffy_project_id]').val(data.diffy_project_id);
-        }
-        else {
-          var error_message = '<div id="setting-error-settings_updated" class="diffy-register-error notice notice-error settings-error is-dismissible"> \n' +
-              '<p><strong>' + data.error_message + '.</strong> Please go to <a target="_blank" href="https://app.diffy.website">Diffy app</a> and retrieve API Key and set up the project manually.</p></div>';
-          $('.diffy-register-wrapper').append(error_message);
-        }
-        $('.updating-message').remove();
-        $('.diffy-register-wrapper').show();
-      })
-      .fail(function() {
-        console.log( "Ajax error" );
-      });
-    });
-  });
+					if ( response.success ) {
+						$wrapper.empty().append( notice( 'success', sprintf2( i18n.created, data.email, data.password ) ) );
+						$( 'input[name=diffy_api_key]' ).val( data.diffy_api_key );
+						$( 'input[name=diffy_project_id]' ).val( data.diffy_project_id );
+					} else {
+						$wrapper.append( notice( 'error', ( data.error_message || '' ) + ' ' + i18n.failed, { url: i18n.appUrl, text: i18n.appLink } ) );
+					}
+				} )
+				.fail( function() {
+					$wrapper.append( notice( 'error', i18n.failed, { url: i18n.appUrl, text: i18n.appLink } ) );
+				} )
+				.always( function() {
+					$progress.remove();
+					$wrapper.show();
+				} );
+		} );
+	} );
 
-})( jQuery );
+} )( jQuery );
